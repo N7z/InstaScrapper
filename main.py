@@ -1,5 +1,6 @@
 import instaloader
 import os
+from tqdm import tqdm
 
 # Also before running main you should run save_session.py to generate your instagram session
 # Obligatory use of firefox web browser, if you don't use firefox change alter the code to your liking
@@ -7,7 +8,7 @@ import os
 # session-username
 
 # Not the target for scraping, actually your instagram
-instagram_username = "xxxxxxxxx"
+instagram_username = "xxxxxxxxxx"
 
 def main(): 
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -41,14 +42,16 @@ def main():
 
     # Save followers
     print("\x1b[34m[*] Fetching followers...\x1b[0m")
+    followers = profile.get_followers()
     with open(f"{base_dir}/followers.txt", "w") as file:
-        for follower in profile.get_followers():
+        for follower in tqdm(followers, desc="Saving followers", unit="user"):
             file.write(follower.username + "\n")
 
     # Save followings
     print("\x1b[34m[*] Fetching followings...\x1b[0m")
+    followings = profile.get_followees()
     with open(f"{base_dir}/following.txt", "w") as file:
-        for following in profile.get_followees():
+        for following in tqdm(followings, desc="Saving followings", unit="user"):
             file.write(following.username + "\n")
 
     # Download posts
